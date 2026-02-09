@@ -14,17 +14,6 @@ const Home = () => {
   const [userName, setUserName] = useState("");
 
   const router = useRouter();
-  // const fetchItems = async () => {
-  //   try {
-  //     const res = await fetch("/api/lists/listNames");
-  //     const data = await res.json();
-  //     console.log(data);
-  //     return setListNames(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //     return err;
-  //   }
-  // };
 
   // const fetchItems = useEffectEvent(async () => {
   //   try {
