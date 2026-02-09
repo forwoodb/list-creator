@@ -98,7 +98,7 @@ const Home = () => {
     setListNames(
       listNames.filter((item) => {
         return item._id !== id;
-      })
+      }),
     );
   };
 
@@ -127,7 +127,7 @@ const Home = () => {
           name = updateName;
         }
         return name;
-      })
+      }),
     );
 
     setEdit("");
@@ -168,40 +168,33 @@ const Home = () => {
         value={newList.listName}
         change={handleChange}
       />
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th>List Names</th>
-          </tr>
-        </thead>
-        <tbody className="m-auto">
+      <div className="w-full">
+        <h2>List Names</h2>
+        <div className="m-auto">
           {listNames.map((listName) => {
             if (listName._id === edit) {
               return (
-                <tr
+                <div
                   key={listName._id}
                   className="
                   m-2.5 
                   bg-gray-200
                   "
                 >
-                  <td>
-                    <input
-                      type="text"
-                      value={update}
-                      onChange={(e) => setUpdate(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <button onClick={() => updateListName(listName)}>
-                      Update
-                    </button>
-                  </td>
-                </tr>
+                  <input
+                    type="text"
+                    value={update}
+                    onChange={(e) => setUpdate(e.target.value)}
+                    className="bg-white"
+                  />
+                  <button onClick={() => updateListName(listName)}>
+                    Update
+                  </button>
+                </div>
               );
             } else {
               return (
-                <tr
+                <div
                   key={listName._id}
                   className="
                   flex
@@ -215,17 +208,13 @@ const Home = () => {
                   rounded
                   "
                 >
-                  <td className="w-80">
-                    <Link href={`/listItems/${listName._id}`}>
-                      {listName.listName}
-                    </Link>
-                  </td>
-                  <td>
+                  <Link href={`/listItems/${listName._id}`}>
+                    {listName.listName}
+                  </Link>
+                  <div className="buttons">
                     <Button click={() => editListName(listName)} border>
                       Edit
                     </Button>
-                  </td>
-                  <td>
                     <Button
                       click={() => deleteListName(listName._id)}
                       className={"bg-red-700 text-white"}
@@ -233,13 +222,13 @@ const Home = () => {
                     >
                       Delete
                     </Button>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               );
             }
           })}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </AppContainer>
   );
 };

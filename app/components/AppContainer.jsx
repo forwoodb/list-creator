@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const ListNames = ({ children }) => {
+const AppContainer = ({ children }) => {
   return (
     <div
       className="
@@ -20,4 +20,4 @@ const ListNames = ({ children }) => {
   );
 };
 
-export default ListNames;
+export default AppContainer;
