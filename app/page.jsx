@@ -138,7 +138,7 @@ const Home = () => {
         text-gray-200
         "
       >
-        Lists
+        List Names
       </h2>
       <div
         className="

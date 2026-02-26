@@ -73,7 +73,7 @@ const ListItems = () => {
         if (item._id !== id) {
           return item;
         }
-      })
+      }),
     );
     console.log(id);
   };
@@ -123,36 +123,26 @@ const ListItems = () => {
         change={handleChange}
         className={"border-0"}
       />
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th>Items</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody className="m-auto">
+      <div className="w-full">
+        <h2>List Items</h2>
+        <div className="m-auto">
           {listItems.map((item) => {
             if (item._id === editItem) {
               return (
-                <tr
+                <div
                   key={item._id}
                   className="
                   m-2.5 
                   bg-gray-200
                   "
                 >
-                  <td>
-                    <input type="text" value={item.listItem} />
-                  </td>
-                  <td>
-                    <button onClick={() => editItemID(item)}>Update</button>
-                  </td>
-                </tr>
+                  <input type="text" value={item.listItem} />
+                  <button onClick={() => editItemID(item)}>Update</button>
+                </div>
               );
             }
             return (
-              <tr
+              <div
                 key={item._id}
                 className="
                 flex
@@ -166,26 +156,22 @@ const ListItems = () => {
                 rounded
                 "
               >
-                <td className="w-80">{item.listItem}</td>
-                <td>
-                  <Button click={() => editItemID(item)} border>
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    click={() => deleteItem(item._id)}
-                    className={"bg-red-700 text-white"}
-                    border
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
+                <p className="w-80">{item.listItem}</p>
+                <Button click={() => editItemID(item)} border>
+                  Edit
+                </Button>
+                <Button
+                  click={() => deleteItem(item._id)}
+                  className={"bg-red-700 text-white"}
+                  border
+                >
+                  Delete
+                </Button>
+              </div>
             );
           })}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </AppContainer>
   );
 };
