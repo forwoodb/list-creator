@@ -30,7 +30,7 @@ const Home = () => {
   const fetchItems = () => {
     fetch("/api/lists/listNames")
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 500) {
           router.push("/login");
           return;
         }
