@@ -30,13 +30,15 @@ const ListNames = () => {
   const fetchItems = () => {
     fetch("/api/lists/listNames")
       .then((res) => {
-        // if (res.status === 500) {
-        //   router.push("/login");
-        //   return;
-        // }
+        if (res.status === 401) {
+          router.push("/login");
+          return;
+        }
         return res.json();
       })
       .then((data) => {
+        console.log(data);
+
         setUserName(data.userName);
         setListNames(data.listNames);
       })
@@ -124,7 +126,7 @@ const ListNames = () => {
   const handleLogout = async () => {
     await fetch("/api/auth/logout");
     // window.location.href = "/login";
-    router.push("/login");
+    // router.push("/login");
   };
 
   return (
