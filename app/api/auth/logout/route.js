@@ -5,6 +5,6 @@ connectDB();
 
 export async function POST(req) {
   const res = new NextResponse();
-  res.cookies.set("jwt", "", { maxAge: new Date(0) });
+  res.cookies.set("jwt-list-creator", "", { maxAge: new Date(0) });
   return res;
 }

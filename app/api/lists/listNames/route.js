@@ -12,7 +12,7 @@ export async function POST(req) {
 
   // Get user ID from cookie
   const cookieStore = await cookies();
-  const token = cookieStore.get("jwt")?.value;
+  const token = cookieStore.get("jwt-list-creator")?.value;
   const user = jwt.verify(token, process.env.JWT_SECRET);
 
   // Add new list name with user ID
@@ -27,7 +27,7 @@ export async function POST(req) {
 export async function GET() {
   // Get user ID from cookie
   const cookieStore = await cookies();
-  const token = cookieStore.get("jwt")?.value;
+  const token = cookieStore.get("jwt-list-creator")?.value;
 
   if (!token) {
     return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });

@@ -14,7 +14,7 @@ export async function GET(req, { params }) {
 
   // Get User ID
   const cookieStore = await cookies();
-  const token = cookieStore.get("jwt")?.value;
+  const token = cookieStore.get("jwt-list-creator")?.value;
   const user = jwt.verify(token, process.env.JWT_SECRET);
 
   const listItems = await ListItem.find({ listId: id, userId: user._id });
@@ -33,7 +33,7 @@ export async function POST(req, { params }) {
 
   // Get userId from cookie
   const cookieStore = await cookies();
-  const token = cookieStore.get("jwt")?.value;
+  const token = cookieStore.get("jwt-list-creator")?.value;
   const user = jwt.verify(token, process.env.JWT_SECRET);
 
   const newItem = new ListItem({ ...id, ...body, userId: user._id });

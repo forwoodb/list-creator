@@ -22,7 +22,7 @@ export async function POST(req) {
     expiresIn: "3d",
   });
 
-  res.cookies.set("jwt", token, {
+  res.cookies.set("jwt-list-creator", token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 3,
   });
