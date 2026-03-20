@@ -6,54 +6,18 @@ import Button from "./Button";
 import AddForm from "./AddForm";
 import AppContainer from "./AppContainer";
 
-const ListNames = () => {
-  const [listNames, setListNames] = useState([]);
+const ListNames = ({ listNames }) => {
+  // const [listNames, setListNames] = useState([]);
   const [newList, setNewList] = useState({ listName: "" });
   const [edit, setEdit] = useState("");
   const [update, setUpdate] = useState("");
   const [userName, setUserName] = useState("");
 
+  // useEffect(() => {
+  //   setListNames(names);
+  // }, []);
+
   const router = useRouter();
-
-  // const fetchItems = useEffectEvent(async () => {
-  //   try {
-  //     const res = await fetch("/api/lists/listNames");
-  //     const data = await res.json();
-  //     console.log(data);
-  //     return setListNames(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //     return err;
-  //   }
-  // });
-
-  const fetchItems = () => {
-    fetch("/api/lists/listNames")
-      .then((res) => {
-        if (res.status === 401) {
-          router.push("/login");
-          return;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-
-        setUserName(data.userName);
-        setListNames(data.listNames);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   await fetchItems();
-    // };
-    // fetchData();
-    fetchItems();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -125,8 +89,7 @@ const ListNames = () => {
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout");
-    // window.location.href = "/login";
-    // router.push("/login");
+    router.push("/login");
   };
 
   return (

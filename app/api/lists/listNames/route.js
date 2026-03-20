@@ -24,17 +24,17 @@ export async function POST(req) {
   return NextResponse.json(newList);
 }
 
-export async function GET() {
-  // Get user ID from cookie
-  const cookieStore = await cookies();
-  const token = cookieStore.get("jwt-list-creator")?.value;
+// export async function GET() {
+//   // Get user ID from cookie
+//   const cookieStore = await cookies();
+//   const token = cookieStore.get("jwt-list-creator")?.value;
 
-  if (!token) {
-    return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
-  }
-  const user = jwt.verify(token, process.env.JWT_SECRET);
-  // Get list names with user ID
-  const listNames = await ListName.find({ userId: user._id });
+//   if (!token) {
+//     return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
+//   }
+//   const user = jwt.verify(token, process.env.JWT_SECRET);
+//   // Get list names with user ID
+//   const listNames = await ListName.find({ userId: user._id });
 
-  return NextResponse.json({ userName: user.username, listNames });
-}
+//   return NextResponse.json({ userName: user.username, listNames });
+// }
