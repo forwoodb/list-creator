@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import Button from "./Button";
 import AddForm from "./AddForm";
 import AppContainer from "./AppContainer";
+import { useOptimistic } from "react";
 
-const ListNames = ({ listNames }) => {
+const ListNames = ({ listNames, createList }) => {
   // const [listNames, setListNames] = useState([]);
   const [newList, setNewList] = useState({ listName: "" });
   const [edit, setEdit] = useState("");
@@ -116,7 +117,8 @@ const ListNames = ({ listNames }) => {
       </div>
       <AddForm
         mode={"listName"}
-        submit={handleSubmit}
+        submit={createList}
+        // submit={handleSubmit}
         value={newList.listName}
         change={handleChange}
       />

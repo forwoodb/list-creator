@@ -1,11 +1,15 @@
 "use client";
 import Button from "./Button";
+import { useFormStatus } from "react-dom";
 
 const AddForm = ({ mode, submit, value, change }) => {
+  const { pending } = useFormStatus();
+
   return (
     <>
       <form
-        onSubmit={submit}
+        // onSubmit={submit}
+        action={submit}
         className="
         mb-5 
         p-2.5 
@@ -16,12 +20,14 @@ const AddForm = ({ mode, submit, value, change }) => {
           type="text"
           name={mode}
           id={mode}
-          value={value}
-          onChange={change}
+          // value={value}
+          // onChange={change}
           className="mx-2 bg-white"
         />
         <Button className="bg-gray-200" border>
-          Add {mode === "listName" ? "List" : "Item"}
+          {pending
+            ? "Adding..."
+            : `Add ${mode === "listName" ? "List" : "Item"}`}
         </Button>
       </form>
     </>

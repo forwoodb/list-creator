@@ -4,9 +4,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 import ListName from "./models/ListName";
+import { revalidatePath } from "next/cache";
 
 const Home = async () => {
   connectDB();
+
+  // Authorize user
   const cookieStore = await cookies();
   const cookie = cookieStore.get("jwt-list-creator");
 
@@ -14,18 +17,36 @@ const Home = async () => {
     redirect("/login");
   }
 
+  // Get User ID
   const token = cookieStore.get("jwt-list-creator")?.value;
-
-  if (!token) {
-    return NextResponse.json({ msg: "Unauthorized" }, { status: 401 });
-  }
   const user = jwt.verify(token, process.env.JWT_SECRET);
+
   // Get list names with user ID
-  const listNames = await ListName.find({ userId: user._id });
+  const data = await ListName.find({ userId: user._id }).lean();
+  const listNames = JSON.parse(JSON.stringify(data));
+
+  // Create New List
+  const createList = async (formData) => {
+    "use server";
+
+    const listName = formData.get("listName");
+
+    // Get user ID from cookie
+    const cookieStore = await cookies();
+    const token = cookieStore.get("jwt-list-creator")?.value;
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+
+    const newList = new ListName({ listName, userId: user._id });
+
+    await newList.save();
+
+    revalidatePath("/");
+    // redirect("/");
+  };
 
   return (
     <>
-      <ListNames listNames={listNames} />
+      <ListNames listNames={listNames} createList={createList} />
     </>
   );
 };
