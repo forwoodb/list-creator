@@ -157,45 +157,6 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
           })}
         </div>
       </div>
-      <h2 className="text-center text-6xl text-gray-200">List Names</h2>
-
-      <AddForm mode="listName" submit={createList} />
-
-      <div className="w-full">
-        <h2>List Names</h2>
-
-        {listNames.map((list) => (
-          <div
-            key={list._id}
-            className="flex justify-between max-w-lg p-2.5 mx-auto my-2.5 bg-gray-200 rounded"
-          >
-            {/* Update Form */}
-            <form
-              action={updateList.bind(null, list._id)}
-              className="flex gap-2"
-            >
-              <input
-                name="listName"
-                defaultValue={list.listName}
-                className="bg-white"
-              />
-              <Button border>Update</Button>
-            </form>
-
-            {/* Navigation */}
-            <Link href={`/listItems/${list._id}`}>Open</Link>
-
-            {/* Delete */}
-            <Button
-              onClick={() => deleteList(list._id)}
-              className="bg-red-700 text-white"
-              border
-            >
-              Delete
-            </Button>
-          </div>
-        ))}
-      </div>
     </AppContainer>
   );
 };
