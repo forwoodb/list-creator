@@ -41,12 +41,27 @@ const Home = async () => {
     await newList.save();
 
     revalidatePath("/");
-    // redirect("/");
+  };
+
+  const deleteList = async (id) => {
+    "use server";
+    await ListName.findByIdAndDelete(id);
+    revalidatePath("/");
+  };
+
+  const updateList = async (list) => {
+    "use server";
+    console.log(list);
   };
 
   return (
     <>
-      <ListNames listNames={listNames} createList={createList} />
+      <ListNames
+        listNames={listNames}
+        createList={createList}
+        deleteList={deleteList}
+        updateList={updateList}
+      />
     </>
   );
 };
