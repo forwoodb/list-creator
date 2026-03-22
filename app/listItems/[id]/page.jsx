@@ -1,179 +1,46 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import AddForm from "@/app/components/AddForm";
-import Button from "@/app/components/Button";
-import AppContainer from "@/app/components/AppContainer";
+import ListItems from "@/app/components/ListItems";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import jwt from "jsonwebtoken";
+import ListItem from "@/app/models/ListItem";
+import ListName from "@/app/models/ListName";
+import User from "@/app/models/User";
 
-const ListItems = () => {
-  // Get List Name ID from URL
-  const params = useParams();
-  const listId = params.id;
+const Page = async ({ params }) => {
+  // Get list ID
+  const { id } = await params;
 
-  const [listItems, setListItems] = useState([]);
-  const [newItem, setNewItem] = useState({ listItem: "", listId });
-  const [editItem, setEditItem] = useState("");
-  const [updateItem, setUpdateItem] = useState("");
-  const [listName, setListName] = useState("");
-  const [userName, setUserName] = useState("");
+  // Get user ID
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("jwt-list-creator");
 
-  const fetchItems = () => {
-    fetch(`/api/lists/listItems/${listId}`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data.listName.listName);
+  if (!cookie) {
+    redirect("/login");
+  }
 
-        setListItems(data.listItems);
-        setListName(data.listName.listName);
-        setUserName(data.userName);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const token = cookie.value;
+  const verify = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = verify._id;
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  const dataLi = await ListItem.find({ listId: id, userId: userId }).lean();
+  const listItems = JSON.parse(JSON.stringify(dataLi));
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const dataLn = await ListName.findOne({ _id: id }).lean();
+  const listName = dataLn.listName;
+  console.log(listName);
 
-    setNewItem((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log(newItem);
-
-    await fetch(`/api/lists/listItems/${listId}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newItem),
-    });
-
-    fetchItems();
-    setNewItem({ listItem: "" });
-  };
-
-  const deleteItem = (id) => {
-    fetch(`/api/lists/listItems/${listId}/${id}`);
-    setListItems(
-      listItems.filter((item) => {
-        if (item._id !== id) {
-          return item;
-        }
-      }),
-    );
-    console.log(id);
-  };
-
-  const editItemID = (item) => {
-    console.log(item);
-    setEditItem(item._id);
-    setUpdateItem(item.listItem);
-  };
-
-  const handleLogout = async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-    window.location.href = "/login";
-  };
+  const userInfo = await User.findOne({ _id: userId }).lean();
+  const userName = userInfo.username;
 
   return (
-    <AppContainer>
-      <h2
-        className="
-        text-center 
-        text-6xl 
-        text-gray-200
-        "
-      >
-        {listName}
-      </h2>
-      <div
-        className="
-        text-wrapper
-        flex
-        justify-between
-        py-1
-        "
-      >
-        <p>Hello {userName}</p>
-        <h3>
-          <Link href={"/"}>View Lists</Link>
-        </h3>
-        <Button click={handleLogout}>Log Out</Button>
-      </div>
-      <AddForm
-        submit={handleSubmit}
-        mode={"listItem"}
-        value={newItem.listItem}
-        change={handleChange}
-        className={"border-0"}
+    <>
+      <ListItems
+        listItems={listItems}
+        listName={listName}
+        userName={userName}
       />
-      <div className="w-full">
-        <h2>List Items</h2>
-        <div className="m-auto">
-          {listItems.map((item) => {
-            if (item._id === editItem) {
-              return (
-                <div
-                  key={item._id}
-                  className="
-                  m-2.5 
-                  bg-gray-200
-                  "
-                >
-                  <input type="text" value={item.listItem} />
-                  <button onClick={() => editItemID(item)}>Update</button>
-                </div>
-              );
-            }
-            return (
-              <div
-                key={item._id}
-                className="
-                flex
-                justify-between
-                align-middle
-                max-w-lg
-                p-2.5
-                mx-auto
-                my-2.5 
-                bg-gray-200 
-                rounded
-                "
-              >
-                <p className="w-80">{item.listItem}</p>
-                <Button click={() => editItemID(item)} border>
-                  Edit
-                </Button>
-                <Button
-                  click={() => deleteItem(item._id)}
-                  className={"bg-red-700 text-white"}
-                  border
-                >
-                  Delete
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </AppContainer>
+    </>
   );
 };
 
-export default ListItems;
+export default Page;
