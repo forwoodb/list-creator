@@ -101,7 +101,7 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
                     onChange={(e) => setUpdate(e.target.value)}
                     className="bg-white"
                   />
-                  <Button click={() => updateListName(listName)} border>
+                  <Button onClick={() => updateListName(listName)} border>
                     Update
                   </Button>
                 </div>

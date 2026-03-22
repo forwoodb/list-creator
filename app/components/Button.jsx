@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 
-const Button = ({ children, click, className = "", border = false }) => {
+const Button = ({ children, onClick, className = "", border = false }) => {
   return (
     <>
       <button
-        onClick={click}
+        onClick={onClick}
         className={`
           inline-flex 
           justify-center 
