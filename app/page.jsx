@@ -49,9 +49,14 @@ const Home = async () => {
     revalidatePath("/");
   };
 
-  const updateList = async (list) => {
+  const updateList = async (formData) => {
     "use server";
-    console.log(list);
+    // console.log(formData.get("_id"));
+
+    const _id = formData.get("_id");
+    const listName = formData.get("listName");
+    await ListName.findByIdAndUpdate(_id, { _id, listName });
+    revalidatePath("/");
   };
 
   return (

@@ -15,37 +15,39 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
 
   const editListName = (item) => {
     setEdit(item._id);
-    setUpdate(item.listName);
-  };
-
-  const updateListName = (item) => {
-    const updateName = {
-      _id: item._id,
-      listName: update,
-    };
-
     console.log(item);
 
-    fetch(`/api/lists/listNames/${item._id}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(updateName),
-    });
-
-    setListNames(
-      listNames.map((name) => {
-        if (name._id === updateName._id) {
-          name = updateName;
-        }
-        return name;
-      }),
-    );
-
-    setEdit("");
-    setUpdate("");
+    setUpdate(item);
   };
+
+  // const updateListName = (item) => {
+  //   const updateName = {
+  //     _id: item._id,
+  //     listName: update,
+  //   };
+
+  //   console.log(item);
+
+  //   fetch(`/api/lists/listNames/${item._id}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify(updateName),
+  //   });
+
+  //   setListNames(
+  //     listNames.map((name) => {
+  //       if (name._id === updateName._id) {
+  //         name = updateName;
+  //       }
+  //       return name;
+  //     }),
+  //   );
+
+  //   setEdit("");
+  //   setUpdate("");
+  // };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout");
@@ -72,7 +74,7 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
           "
       >
         <p>Hello {userName}</p>
-        <Button click={handleLogout}>Log Out</Button>
+        <Button onClick={handleLogout}>Log Out</Button>
       </div>
       <AddForm mode={"listName"} submit={createList} />
       <div className="w-full">
@@ -95,15 +97,27 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
                   rounded
                   "
                 >
-                  <input
-                    type="text"
-                    value={update}
-                    onChange={(e) => setUpdate(e.target.value)}
-                    className="bg-white"
-                  />
-                  <Button onClick={() => updateListName(listName)} border>
-                    Update
-                  </Button>
+                  <form
+                    action={async (formData) => {
+                      updateList(formData);
+                      setEdit("");
+                    }}
+                    className="flex justify-between w-full"
+                  >
+                    <input
+                      type="hidden"
+                      name="_id"
+                      value={update._id}
+                      className="bg-white"
+                    />
+                    <input
+                      type="text"
+                      name="listName"
+                      defaultValue={update.listName}
+                      className="bg-white"
+                    />
+                    <Button border>Update</Button>
+                  </form>
                 </div>
               );
             } else {
@@ -126,11 +140,11 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
                     {listName.listName}
                   </Link>
                   <div className="buttons">
-                    <Button click={() => editListName(listName)} border>
+                    <Button onClick={() => editListName(listName)} border>
                       Edit
                     </Button>
                     <Button
-                      click={() => deleteList(listName._id)}
+                      onClick={() => deleteList(listName._id)}
                       className={"bg-red-700 text-white"}
                       border
                     >
@@ -142,6 +156,45 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
             }
           })}
         </div>
+      </div>
+      <h2 className="text-center text-6xl text-gray-200">List Names</h2>
+
+      <AddForm mode="listName" submit={createList} />
+
+      <div className="w-full">
+        <h2>List Names</h2>
+
+        {listNames.map((list) => (
+          <div
+            key={list._id}
+            className="flex justify-between max-w-lg p-2.5 mx-auto my-2.5 bg-gray-200 rounded"
+          >
+            {/* Update Form */}
+            <form
+              action={updateList.bind(null, list._id)}
+              className="flex gap-2"
+            >
+              <input
+                name="listName"
+                defaultValue={list.listName}
+                className="bg-white"
+              />
+              <Button border>Update</Button>
+            </form>
+
+            {/* Navigation */}
+            <Link href={`/listItems/${list._id}`}>Open</Link>
+
+            {/* Delete */}
+            <Button
+              onClick={() => deleteList(list._id)}
+              className="bg-red-700 text-white"
+              border
+            >
+              Delete
+            </Button>
+          </div>
+        ))}
       </div>
     </AppContainer>
   );
