@@ -6,7 +6,13 @@ import Button from "./Button";
 import AddForm from "./AddForm";
 import AppContainer from "./AppContainer";
 
-const ListNames = ({ listNames, createList, deleteList, updateList }) => {
+const ListNames = ({
+  listNames,
+  username,
+  createList,
+  deleteList,
+  updateList,
+}) => {
   const [edit, setEdit] = useState("");
   const [update, setUpdate] = useState("");
   const [userName, setUserName] = useState("");
@@ -73,7 +79,7 @@ const ListNames = ({ listNames, createList, deleteList, updateList }) => {
           py-1
           "
       >
-        <p>Hello {userName}</p>
+        <p>Hello {username}</p>
         <Button onClick={handleLogout}>Log Out</Button>
       </div>
       <AddForm mode={"listName"} submit={createList} />

@@ -26,20 +26,21 @@ const ListItems = ({ listItems, listName, userName }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (formData) => {
 
-    await fetch(`/api/lists/listItems/${listId}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newItem),
-    });
+  // e.preventDefault();
 
-    fetchItems();
-    setNewItem({ listItem: "" });
-  };
+  // await fetch(`/api/lists/listItems/${listId}`, {
+  //   method: "POST",
+  //   headers: {
+  //     "content-type": "application/json",
+  //   },
+  //   body: JSON.stringify(newItem),
+  // });
+
+  // fetchItems();
+  // setNewItem({ listItem: "" });
+  // };
 
   const deleteItem = (id) => {
     fetch(`/api/lists/listItems/${listId}/${id}`);

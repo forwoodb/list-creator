@@ -32,6 +32,10 @@ const Page = async ({ params }) => {
   const userInfo = await User.findOne({ _id: userId }).lean();
   const userName = userInfo.username;
 
+  const createListItem = async (formData) => {
+    console.log(Object.fromEntries(formData));
+  };
+
   return (
     <>
       <ListItems
