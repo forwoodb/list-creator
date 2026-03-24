@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import ListItem from "@/app/models/ListItem";
 import ListName from "@/app/models/ListName";
 import User from "@/app/models/User";
+import { revalidatePath } from "next/cache";
 
 // Get user ID
 const getUserId = async () => {
@@ -40,9 +41,12 @@ const Page = async ({ params }) => {
     // console.log(Object.fromEntries(formData));
     const listItem = formData.get("listItem");
 
-    const userId = getUserId();
+    const userId = await getUserId();
 
-    const newItem = new ListItem({ listItem, userId });
+    const newItem = new ListItem({ listItem, listId: id, userId });
+    await newItem.save();
+
+    revalidatePath(`/listItems/${id}`);
     console.log(newItem);
   };
 

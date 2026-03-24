@@ -15,33 +15,6 @@ const ListItems = ({ listItems, listName, userName, createListItem }) => {
   const [editItem, setEditItem] = useState("");
   const [updateItem, setUpdateItem] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setNewItem((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  // const handleSubmit = async (formData) => {
-
-  // e.preventDefault();
-
-  // await fetch(`/api/lists/listItems/${listId}`, {
-  //   method: "POST",
-  //   headers: {
-  //     "content-type": "application/json",
-  //   },
-  //   body: JSON.stringify(newItem),
-  // });
-
-  // fetchItems();
-  // setNewItem({ listItem: "" });
-  // };
-
   const deleteItem = (id) => {
     fetch(`/api/lists/listItems/${listId}/${id}`);
     setListItems(
@@ -92,10 +65,7 @@ const ListItems = ({ listItems, listName, userName, createListItem }) => {
       </div>
       <AddForm
         submit={createListItem}
-        // submit={handleSubmit}
         mode={"listItem"}
-        // value={newItem.listItem}
-        // change={handleChange}
         className={"border-0"}
       />
       <div className="w-full">
