@@ -6,34 +6,44 @@ import ListItem from "@/app/models/ListItem";
 import ListName from "@/app/models/ListName";
 import User from "@/app/models/User";
 
+// Get user ID
+const getUserId = async () => {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("jwt-list-creator");
+  const token = cookie.value;
+  const verify = jwt.verify(token, process.env.JWT_SECRET);
+  const id = verify._id;
+  return id;
+};
+
 const Page = async ({ params }) => {
   // Get list ID
   const { id } = await params;
 
-  // Get user ID
-  const cookieStore = await cookies();
-  const cookie = cookieStore.get("jwt-list-creator");
+  const userId = await getUserId();
 
-  if (!cookie) {
+  if (!userId) {
     redirect("/login");
   }
-
-  const token = cookie.value;
-  const verify = jwt.verify(token, process.env.JWT_SECRET);
-  const userId = verify._id;
 
   const dataLi = await ListItem.find({ listId: id, userId: userId }).lean();
   const listItems = JSON.parse(JSON.stringify(dataLi));
 
   const dataLn = await ListName.findOne({ _id: id }).lean();
   const listName = dataLn.listName;
-  console.log(listName);
 
   const userInfo = await User.findOne({ _id: userId }).lean();
   const userName = userInfo.username;
 
   const createListItem = async (formData) => {
-    console.log(Object.fromEntries(formData));
+    "use server";
+    // console.log(Object.fromEntries(formData));
+    const listItem = formData.get("listItem");
+
+    const userId = getUserId();
+
+    const newItem = new ListItem({ listItem, userId });
+    console.log(newItem);
   };
 
   return (
@@ -42,6 +52,7 @@ const Page = async ({ params }) => {
         listItems={listItems}
         listName={listName}
         userName={userName}
+        createListItem={createListItem}
       />
     </>
   );

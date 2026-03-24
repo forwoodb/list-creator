@@ -6,7 +6,7 @@ import AddForm from "@/app/components/AddForm";
 import Button from "@/app/components/Button";
 import AppContainer from "@/app/components/AppContainer";
 
-const ListItems = ({ listItems, listName, userName }) => {
+const ListItems = ({ listItems, listName, userName, createListItem }) => {
   // Get List Name ID from URL
   const params = useParams();
   const listId = params.id;
@@ -91,10 +91,11 @@ const ListItems = ({ listItems, listName, userName }) => {
         <Button click={handleLogout}>Log Out</Button>
       </div>
       <AddForm
-        submit={handleSubmit}
+        submit={createListItem}
+        // submit={handleSubmit}
         mode={"listItem"}
-        value={newItem.listItem}
-        change={handleChange}
+        // value={newItem.listItem}
+        // change={handleChange}
         className={"border-0"}
       />
       <div className="w-full">
