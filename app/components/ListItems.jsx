@@ -86,7 +86,7 @@ const ListItems = ({
                   "
                 >
                   <form
-                    action={async (formData) => {
+                    action={(formData) => {
                       updateListItem(formData);
                       setEditItem("");
                     }}
@@ -102,6 +102,7 @@ const ListItems = ({
                       type="text"
                       name="listItem"
                       defaultValue={item.listItem}
+                      className="bg-white"
                     />
                     <Button border>Update</Button>
                   </form>
