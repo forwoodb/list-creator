@@ -50,6 +50,14 @@ const Page = async ({ params }) => {
     console.log(newItem);
   };
 
+  const deleteListItem = async (itemId) => {
+    "use server";
+
+    await ListItem.findByIdAndDelete(itemId);
+
+    revalidatePath`/listItems/${id}`;
+  };
+
   return (
     <>
       <ListItems
@@ -57,6 +65,7 @@ const Page = async ({ params }) => {
         listName={listName}
         userName={userName}
         createListItem={createListItem}
+        deleteListItem={deleteListItem}
       />
     </>
   );

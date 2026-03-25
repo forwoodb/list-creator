@@ -6,25 +6,19 @@ import AddForm from "@/app/components/AddForm";
 import Button from "@/app/components/Button";
 import AppContainer from "@/app/components/AppContainer";
 
-const ListItems = ({ listItems, listName, userName, createListItem }) => {
+const ListItems = ({
+  listItems,
+  listName,
+  userName,
+  createListItem,
+  deleteListItem,
+}) => {
   // Get List Name ID from URL
   const params = useParams();
   const listId = params.id;
 
-  const [newItem, setNewItem] = useState({ listItem: "", listId });
   const [editItem, setEditItem] = useState("");
   const [updateItem, setUpdateItem] = useState("");
-
-  const deleteItem = (id) => {
-    fetch(`/api/lists/listItems/${listId}/${id}`);
-    setListItems(
-      listItems.filter((item) => {
-        if (item._id !== id) {
-          return item;
-        }
-      }),
-    );
-  };
 
   const editItemID = (item) => {
     setEditItem(item._id);
@@ -61,7 +55,7 @@ const ListItems = ({ listItems, listName, userName, createListItem }) => {
         <h3>
           <Link href={"/"}>View Lists</Link>
         </h3>
-        <Button click={handleLogout}>Log Out</Button>
+        <Button onClick={handleLogout}>Log Out</Button>
       </div>
       <AddForm
         submit={createListItem}
@@ -77,12 +71,19 @@ const ListItems = ({ listItems, listName, userName, createListItem }) => {
                 <div
                   key={item._id}
                   className="
-                  m-2.5 
-                  bg-gray-200
+                  flex
+                  justify-between
+                  align-middle
+                  max-w-lg
+                  p-2.5
+                  mx-auto
+                  my-2.5 
+                  bg-gray-200 
+                  rounded
                   "
                 >
                   <input type="text" value={item.listItem} />
-                  <button onClick={() => editItemID(item)}>Update</button>
+                  <Button onClick={() => editItemID(item)}>Update</Button>
                 </div>
               );
             }
@@ -102,11 +103,11 @@ const ListItems = ({ listItems, listName, userName, createListItem }) => {
                 "
               >
                 <p className="w-80">{item.listItem}</p>
-                <Button click={() => editItemID(item)} border>
+                <Button onClick={() => editItemID(item)} border>
                   Edit
                 </Button>
                 <Button
-                  click={() => deleteItem(item._id)}
+                  onClick={() => deleteListItem(item._id)}
                   className={"bg-red-700 text-white"}
                   border
                 >
