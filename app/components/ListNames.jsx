@@ -113,10 +113,19 @@ const ListNames = ({
                   rounded
                   "
                 >
-                  <Link href={`/listItems/${listName._id}`}>
-                    {listName.listName}
-                  </Link>
+                  {listName.listName}
                   <div className="buttons">
+                    <Link
+                      href={`/listItems/${listName._id}`}
+                      className="inline-flex justify-center 
+                        align-middle 
+                        px-2.5 
+                        mx-1
+                        cursor-pointer 
+                        rounded"
+                    >
+                      View
+                    </Link>
                     <Button onClick={() => editListName(listName)} border>
                       Edit
                     </Button>
