@@ -26,35 +26,6 @@ const ListNames = ({
     setUpdate(item);
   };
 
-  // const updateListName = (item) => {
-  //   const updateName = {
-  //     _id: item._id,
-  //     listName: update,
-  //   };
-
-  //   console.log(item);
-
-  //   fetch(`/api/lists/listNames/${item._id}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify(updateName),
-  //   });
-
-  //   setListNames(
-  //     listNames.map((name) => {
-  //       if (name._id === updateName._id) {
-  //         name = updateName;
-  //       }
-  //       return name;
-  //     }),
-  //   );
-
-  //   setEdit("");
-  //   setUpdate("");
-  // };
-
   const handleLogout = async () => {
     await fetch("/api/auth/logout");
     router.push("/login");

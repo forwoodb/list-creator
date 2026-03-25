@@ -58,6 +58,19 @@ const Page = async ({ params }) => {
     revalidatePath`/listItems/${id}`;
   };
 
+  const updateListItem = async (formData) => {
+    "use server";
+    const data = Object.fromEntries(formData);
+
+    await ListItem.findByIdAndUpdate(data._id, {
+      listItem: data.listItem,
+    });
+
+    revalidatePath(`/listItems/${id}`);
+    // console.log(Object.fromEntries(formData));
+    console.log(data._id);
+  };
+
   return (
     <>
       <ListItems
@@ -66,6 +79,7 @@ const Page = async ({ params }) => {
         userName={userName}
         createListItem={createListItem}
         deleteListItem={deleteListItem}
+        updateListItem={updateListItem}
       />
     </>
   );

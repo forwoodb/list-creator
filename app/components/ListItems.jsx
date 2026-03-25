@@ -12,6 +12,7 @@ const ListItems = ({
   userName,
   createListItem,
   deleteListItem,
+  updateListItem,
 }) => {
   // Get List Name ID from URL
   const params = useParams();
@@ -21,6 +22,8 @@ const ListItems = ({
   const [updateItem, setUpdateItem] = useState("");
 
   const editItemID = (item) => {
+    console.log(item);
+
     setEditItem(item._id);
     setUpdateItem(item.listItem);
   };
@@ -82,8 +85,26 @@ const ListItems = ({
                   rounded
                   "
                 >
-                  <input type="text" value={item.listItem} />
-                  <Button onClick={() => editItemID(item)}>Update</Button>
+                  <form
+                    action={async (formData) => {
+                      updateListItem(formData);
+                      setEditItem("");
+                    }}
+                    className="flex justify-between w-full"
+                  >
+                    <input
+                      hidden
+                      type="text"
+                      name="_id"
+                      defaultValue={item._id}
+                    />
+                    <input
+                      type="text"
+                      name="listItem"
+                      defaultValue={item.listItem}
+                    />
+                    <Button border>Update</Button>
+                  </form>
                 </div>
               );
             }
