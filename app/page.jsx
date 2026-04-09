@@ -20,7 +20,14 @@ const Home = async () => {
 
   // Get User ID
   const token = cookieStore.get("jwt-list-creator")?.value;
-  const verify = jwt.verify(token, process.env.JWT_SECRET);
+
+  let verify;
+
+  try {
+    verify = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    redirect("/login");
+  }
 
   // Get list names with user ID
   const data = await ListName.find({ userId: verify._id }).lean();
